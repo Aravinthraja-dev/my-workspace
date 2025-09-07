@@ -1,0 +1,11 @@
+<div class="todo-block">
+    <h1>To Do List</h1>
+    <app-todo-input [searchTerm]="searchTerm" (listItems)="addListItems($event)"></app-todo-input>
+    <app-todo-list-item 
+        [todolist]="todolist" 
+        (removeItemEvent)="removeItem($event)"
+        (editItemEvent)="editItem($event)"
+        (isCompletedEvent)="isCompleted($event)"
+        >
+    </app-todo-list-item>
+</div> 

@@ -1,0 +1,17 @@
+<div class="list-block">
+    <ul>
+        @for (item of todolist; track $index) {
+        <li>
+            <input 
+                type="checkbox" 
+                (change)="isCompleted(item)"
+            />
+            <span [class.completed]="item.completed">{{item.task}}</span>
+            <div class="button-group">
+                <span (click)="editItem(item)">✏️</span>
+                <span (click)="removeItem($index)">X</span>
+            </div>
+        </li>
+        }
+    </ul>
+</div>

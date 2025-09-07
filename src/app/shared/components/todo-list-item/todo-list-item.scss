@@ -1,0 +1,44 @@
+.list-block {
+    ul {
+        list-style-type: none;
+        padding: 0;
+
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+
+            input[type="checkbox"] {
+                margin-right: 10px;
+                width: 16px;
+                height: 16px;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+
+            .completed {
+                text-decoration: line-through;
+                color: #888;
+            }
+
+            .button-group {
+                display: flex;
+                margin-left: auto;
+                gap: 10px;
+                justify-content: center;
+                align-items: center;
+
+                span {
+                    font-size: 18px;
+                    color: red;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: darkred;
+                    }
+                }
+            }
+        }
+    }
+}

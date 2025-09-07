@@ -1,0 +1,9 @@
+<div class="form-block">
+    <input #todo 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        placeholder="Add a new task" 
+        (keyup.enter)="addItems(todo.value)"
+        />
+    <button type="submit" (click)="addItems(todo.value)">Add</button>
+</div>
