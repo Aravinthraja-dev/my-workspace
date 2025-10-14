@@ -1,0 +1,153 @@
+<form [formGroup]="formData" (ngSubmit)="onSubmit()" class="form-container">
+
+    <!-- Label -->
+    <div class="form-group">
+        <label>Label</label>
+        <input type="text" formControlName="label" placeholder="Enter label" class="form-control" />
+        @if (formData.get('label')?.invalid && formData.get('label')?.touched) {
+        <div class="error">
+            @if (formData.get('label')?.hasError('required')) {
+            <small>Label is required</small>
+            }
+            @if (formData.get('label')?.hasError('minlength')) {
+            <small>Minimum 2 characters required</small>
+            }
+        </div>
+        }
+    </div>
+
+    <!-- Name -->
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" formControlName="name" placeholder="Enter field name" class="form-control" />
+        @if (formData.get('name')?.invalid && formData.get('name')?.touched) {
+        <div class="error">
+            @if (formData.get('name')?.hasError('required')) {
+            <small>Name is required</small>
+            }
+            @if (formData.get('name')?.hasError('pattern')) {
+            <small>Only letters, numbers, and underscores allowed</small>
+            }
+        </div>
+        }
+    </div>
+
+    <!-- Field Type -->
+    <div class="form-group">
+        <label>Field Type</label>
+        <select formControlName="field" class="form-control">
+            <option value="">Select Field Type</option>
+            <option value="text">Text</option>
+            <option value="number">Number</option>
+            <option value="checkbox">Checkbox</option>
+            <option value="select">Select</option>
+            <option value="date">Date</option>
+        </select>
+        @if (formData.get('field')?.invalid && formData.get('field')?.touched) {
+        <div class="error"><small>Field type is required</small></div>
+        }
+    </div>
+
+    <!-- Required Checkbox -->
+    <div class="form-group">
+        <label>Required Field</label>
+        <input type="text" formControlName="requiredYn" placeholder="Enter Required Field" class="form-control" />
+        @if (formData.get('requiredYn')?.invalid && formData.get('requiredYn')?.touched) {
+        <div class="error"><small>Required Field is required</small></div>
+        }
+    </div>
+
+    <!-- Error Message -->
+    <div class="form-group">
+        <label>Error Message</label>
+        <input type="text" formControlName="errorMessage" placeholder="Enter error message" class="form-control" />
+        @if (formData.get('errorMessage')?.invalid && formData.get('errorMessage')?.touched) {
+        <div class="error"><small>Error message is required</small></div>
+        }
+    </div>
+
+    <!-- Inline -->
+    <div class="form-group">
+        <label>Inline</label>
+        <input type="text" formControlName="inline" placeholder="Enter inline info" class="form-control" />
+        @if (formData.get('inline')?.invalid && formData.get('inline')?.touched) {
+        <div class="error"><small>Inline value is required</small></div>
+        }
+    </div>
+
+    <!-- Toaster Message -->
+    <div class="form-group">
+        <label>Toaster Message</label>
+        <textarea formControlName="toasterMessage" rows="2" placeholder="Enter toaster message"
+            class="form-control"></textarea>
+        @if (formData.get('toasterMessage')?.invalid && formData.get('toasterMessage')?.touched) {
+        @if (formData.get('toasterMessage')?.hasError('maxlength')) {
+        <div class="error"><small>Maximum 100 characters allowed</small></div>
+        }
+        }
+    </div>
+
+    <!-- Options (only if field type is select) -->
+    @if (formData.get('field')?.value === 'select' || formData.get('field')?.value === 'checkbox') {
+    <div formArrayName="options" class="options-container">
+        @for (opt of options.controls; track $index) {
+        <div [formGroupName]="$index" class="option-row">
+            <div class="form-group-inline">
+                <label>Option {{ $index + 1 }}</label>
+                <input type="text" formControlName="name" placeholder="Option name" class="form-control small-input" />
+                <button type="button" class="btn-remove" (click)="options.removeAt($index)">✖</button>
+            </div>
+            @if (opt.get('name')?.invalid && opt.get('name')?.touched) {
+            <div class="error"><small>Option name is required</small></div>
+            }
+        </div>
+        }
+
+        <button type="button" class="btn-add" (click)="addOption()">+ Add Option</button>
+    </div>
+    }
+
+    <!-- Submit Button -->
+    <div class="form-actions">
+        <button type="submit" class="btn-submit" [disabled]="formData.invalid">Submit</button>
+    </div>
+
+</form>
+
+
+<div class="table-container">
+  <h2>Dynamic Form Fields</h2>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Label</th>
+        <th>Field Type</th>
+        <th>Required</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @if (FormConfig.length > 0) {
+        @for (field of FormConfig; track field.id; let i = $index) {
+          <tr>
+            <td>{{ i + 1 }}</td>
+            <td>{{ field.label }}</td>
+            <td>{{ field.field }}</td>
+            <td>{{ field.requiredYn === 'Y' ? 'Yes' : 'No' }}</td>
+            <td>
+              <button class="btn btn-edit" (click)="onEdit(field.id, field)">Edit</button>
+              <button class="btn btn-delete" (click)="onDelete(field.id)">Delete</button>
+            </td>
+          </tr>
+        }
+      } @else {
+        <tr>
+          <td colspan="5" class="no-data">No fields found</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
