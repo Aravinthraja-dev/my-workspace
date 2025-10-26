@@ -1,4 +1,5 @@
 export interface SettingsConfigDTO {
+  id: number;
   CompanyID: number;
   DefaultCurrency: string;
   EnableVersionControl: boolean;
@@ -7,8 +8,15 @@ export interface SettingsConfigDTO {
   RoundingPrecision: number;
   EnableWasteTracking: boolean;
   EnableBatchControl: boolean;
-  DefaultUOM: string;
+  DefaultUOM: UOM;
+  DefaultUOM_id: number;
   EnableMultiLevelBOM: boolean;
   LastModifiedByID?: number;
   LastModifiedDate?: Date;
+}
+
+export interface UOM {
+  id: number;
+  UOMCode: string;
+  UOMName: string;
 }

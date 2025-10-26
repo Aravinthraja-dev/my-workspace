@@ -97,9 +97,6 @@ $bg-light: #f8f9fa;
         font-size: 0.9rem;
         transition: background 0.2s ease;
 
-        &:hover {
-          background: darken($error-color, 8%);
-        }
       }
     }
   }
@@ -115,10 +112,6 @@ $bg-light: #f8f9fa;
     font-size: 0.9rem;
     font-weight: 500;
     transition: background 0.2s ease;
-
-    &:hover {
-      background: darken($form-focus, 8%);
-    }
   }
 }
 
@@ -146,10 +139,6 @@ $bg-light: #f8f9fa;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s ease;
-
-    &:hover:not(:disabled) {
-      background: darken($success-color, 7%);
-    }
 
     &:disabled {
       background: #ccc;

@@ -1,0 +1,338 @@
+<form [formGroup]="form"
+  class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#1e1e1e] p-6 rounded-2xl border border-gray-700 shadow-lg">
+  <div class="md:col-span-2">
+    <h3 class="text-lg font-semibold text-blue-400 mb-4 border-b border-gray-700 pb-2">Basic Information</h3>
+  </div>
+
+  <div class="flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">Product Code <span class="text-red-500">*</span></label>
+    <input pInputText formControlName="ProductCode"
+      class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+  </div>
+
+  <div class="flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">Product Name <span class="text-red-500">*</span></label>
+    <input pInputText formControlName="ProductName"
+      class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+  </div>
+
+  <div class="flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">Alias Name</label>
+    <input pInputText formControlName="AliasName"
+      class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+  </div>
+
+  <div class="flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">Print Name</label>
+    <input pInputText formControlName="PrintName"
+      class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+  </div>
+
+  <!-- COMPANY -->
+  <div class="flex flex-col space-y-1">
+    <label for="company-select" class="text-sm font-medium text-gray-300">
+      Company
+    </label>
+    <p-select id="company-select" [options]="companyOptions" formControlName="CompanyID" optionLabel="label"
+      optionValue="value" [filter]="true" [showClear]="true" placeholder="Select Company" class="custom-select w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 
+           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+      <ng-template #selectedItem let-selected>
+        <div class="text-gray-100">{{ selected.label }}</div>
+      </ng-template>
+      <ng-template let-option #item>
+        <div class="text-gray-200">{{ option.label }}</div>
+      </ng-template>
+    </p-select>
+  </div>
+
+  <!-- DIVISION -->
+  <div class="flex flex-col space-y-1">
+    <label for="division-select" class="text-sm font-medium text-gray-300">
+      Division
+    </label>
+    <p-select id="division-select" [options]="divisionOptions" formControlName="DivisionID" optionLabel="label"
+      optionValue="value" [filter]="true" [showClear]="true" placeholder="Select Division" class="custom-select w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 
+           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+      <ng-template #selectedItem let-selected>
+        <div class="text-gray-100">{{ selected.label }}</div>
+      </ng-template>
+      <ng-template let-option #item>
+        <div class="text-gray-200">{{ option.label }}</div>
+      </ng-template>
+    </p-select>
+  </div>
+
+  <!-- <div class="flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">UOM <span class="text-red-500">*</span></label>
+    <input pInputText formControlName="UOM"
+      class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+  </div> -->
+
+  <div class="flex flex-col space-y-1">
+    <label for="unit-select" class="text-sm font-medium text-gray-300">
+      UOM
+    </label>
+    <p-select id="unit-select" [options]="unitOptions" formControlName="UOM" optionLabel="UOMName" optionValue="id"
+      [filter]="true" [showClear]="true" placeholder="Select Unit" class="custom-select w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 
+           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+      <ng-template #selectedItem let-selected>
+        <div class="text-gray-100">{{ selected.UOMName }}</div>
+      </ng-template>
+      <ng-template let-option #item>
+        <div class="text-gray-200">{{ option.UOMName }}</div>
+      </ng-template>
+    </p-select>
+  </div>
+
+  <div class="flex flex-col space-y-1">
+    <label for="product-type-select" class="text-sm font-medium text-gray-300">
+      Product Type <span class="text-red-500">*</span>
+    </label>
+
+    <p-select id="product-type-select" [options]="productTypeOptions" formControlName="ProductType" optionLabel="label"
+      optionValue="value" [filter]="true" [showClear]="false" filterBy="name" placeholder="Select Type" class="custom-select w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 
+           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+      <!-- Template for selected item -->
+      <ng-template #selectedItem let-selectedOption>
+        <div class="flex items-center gap-2">
+          <span class="text-gray-100">{{ selectedOption.label }}</span>
+        </div>
+      </ng-template>
+
+      <!-- Template for dropdown items -->
+      <ng-template let-option #item>
+        <div class="flex items-center gap-2">
+          <span class="text-gray-200">{{ option.label }}</span>
+        </div>
+      </ng-template>
+    </p-select>
+  </div>
+
+  <div class="md:col-span-2">
+    <h3 class="text-lg font-semibold text-blue-400 mb-4 border-b border-gray-700 pb-2">Classification & Units</h3>
+  </div>
+
+  <!-- PRODUCT GROUP -->
+  <div class="flex flex-col space-y-1">
+    <label for="product-group-select" class="text-sm font-medium text-gray-300">
+      Product Group
+    </label>
+    <p-select id="product-group-select" [options]="productGroupOptions" formControlName="ProductGroupID"
+      optionLabel="label" optionValue="value" [filter]="true" [showClear]="true" placeholder="Select Group" class="custom-select w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 
+           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+      <ng-template #selectedItem let-selected>
+        <div class="text-gray-100">{{ selected.label }}</div>
+      </ng-template>
+      <ng-template let-option #item>
+        <div class="text-gray-200">{{ option.label }}</div>
+      </ng-template>
+    </p-select>
+  </div>
+
+  <!-- PRODUCT CATEGORY -->
+  <div class="flex flex-col space-y-1">
+    <label for="product-category-select" class="text-sm font-medium text-gray-300">
+      Product Category
+    </label>
+    <p-select id="product-category-select" [options]="productCategoryOptions" formControlName="ProductCategoryID"
+      optionLabel="label" optionValue="value" [filter]="true" [showClear]="true" placeholder="Select Category" class="custom-select w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 
+           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+      <ng-template #selectedItem let-selected>
+        <div class="text-gray-100">{{ selected.label }}</div>
+      </ng-template>
+      <ng-template let-option #item>
+        <div class="text-gray-200">{{ option.label }}</div>
+      </ng-template>
+    </p-select>
+  </div>
+
+  <!-- PRODUCT BRAND -->
+  <div class="flex flex-col space-y-1">
+    <label for="product-brand-select" class="text-sm font-medium text-gray-300">
+      Product Brand
+    </label>
+    <p-select id="product-brand-select" [options]="productBrandOptions" formControlName="ProductBrandID"
+      optionLabel="label" optionValue="value" [filter]="true" [showClear]="true" placeholder="Select Brand" class="custom-select w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 
+           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+      <ng-template #selectedItem let-selected>
+        <div class="text-gray-100">{{ selected.label }}</div>
+      </ng-template>
+      <ng-template let-option #item>
+        <div class="text-gray-200">{{ option.label }}</div>
+      </ng-template>
+    </p-select>
+  </div>
+
+  <!-- UNIT -->
+  <!-- <div class="flex flex-col space-y-1">
+    <label for="unit-select" class="text-sm font-medium text-gray-300">
+      Unit
+    </label>
+    <p-select id="unit-select" [options]="unitOptions" formControlName="UnitID" optionLabel="UOMName" optionValue="id"
+      [filter]="true" [showClear]="true" placeholder="Select Unit" class="custom-select w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 
+           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+      <ng-template #selectedItem let-selected>
+        <div class="text-gray-100">{{ selected.UOMName }}</div>
+      </ng-template>
+      <ng-template let-option #item>
+        <div class="text-gray-200">{{ option.UOMName }}</div>
+      </ng-template>
+    </p-select>
+  </div> -->
+
+  <div class="flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">Unit <span class="text-red-500">*</span></label>
+    <input pInputText formControlName="UnitID"
+      class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+  </div>
+
+
+  <div class="md:col-span-2">
+    <h3 class="text-lg font-semibold text-blue-400 mb-4 border-b border-gray-700 pb-2">Pricing & Rates</h3>
+  </div>
+
+  <div class="flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">Sales Rate</label>
+    <p-inputNumber formControlName="Rate" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2"
+      inputStyleClass="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"></p-inputNumber>
+  </div>
+
+  <div class="flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">Cost Rate</label>
+    <p-inputNumber formControlName="CostRate" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2"
+      inputStyleClass="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"></p-inputNumber>
+  </div>
+
+  <div class="flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">MRP (Max Retail Price)</label>
+    <p-inputNumber formControlName="MRP" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2"
+      inputStyleClass="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"></p-inputNumber>
+  </div>
+
+  <div class="flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">Min Sales Rate</label>
+    <p-inputNumber formControlName="MinSalesRate" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2"
+      inputStyleClass="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"></p-inputNumber>
+  </div>
+
+  <div class="flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">Max Discount Rate (%)</label>
+    <p-inputNumber formControlName="MaxDiscountRate" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2"
+      inputStyleClass="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"></p-inputNumber>
+  </div>
+
+  <div></div>
+
+
+  <div class="md:col-span-2">
+    <h3 class="text-lg font-semibold text-blue-400 mb-4 border-b border-gray-700 pb-2">Dimensions</h3>
+  </div>
+
+  <div class="md:col-span-2 grid grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="flex flex-col space-y-1">
+      <label class="text-sm font-medium text-gray-300">Weight</label>
+      <p-inputNumber formControlName="Weight"
+        inputStyleClass="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"></p-inputNumber>
+    </div>
+
+    <div class="flex flex-col space-y-1">
+      <label class="text-sm font-medium text-gray-300">Length</label>
+      <p-inputNumber formControlName="Length"
+        inputStyleClass="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"></p-inputNumber>
+    </div>
+
+    <div class="flex flex-col space-y-1">
+      <label class="text-sm font-medium text-gray-300">Breadth</label>
+      <p-inputNumber formControlName="Breadth"
+        inputStyleClass="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"></p-inputNumber>
+    </div>
+
+    <div class="flex flex-col space-y-1">
+      <label class="text-sm font-medium text-gray-300">Height</label>
+      <p-inputNumber formControlName="Height"
+        inputStyleClass="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"></p-inputNumber>
+    </div>
+
+    <div class="flex flex-col space-y-1">
+      <label class="text-sm font-medium text-gray-300">Thickness</label>
+      <p-inputNumber formControlName="Thickness"
+        inputStyleClass="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"></p-inputNumber>
+    </div>
+
+    <div class="flex flex-col space-y-1">
+      <label class="text-sm font-medium text-gray-300">Volume</label>
+      <p-inputNumber formControlName="Volume"
+        inputStyleClass="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"></p-inputNumber>
+    </div>
+  </div>
+
+
+  <div class="md:col-span-2">
+    <h3 class="text-lg font-semibold text-blue-400 mb-4 border-b border-gray-700 pb-2">Inventory & Batch Settings</h3>
+  </div>
+
+  <div class="md:col-span-2 grid grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="flex items-center space-x-2">
+      <p-checkbox formControlName="MaintainBatchwise" class="mr-2" [binary]="true"
+        inputId="maintainBatchwise"></p-checkbox>
+      <label for="maintainBatchwise" class="text-sm font-medium text-gray-300 ">Maintain Batchwise</label>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <p-checkbox formControlName="BatchWeightRequired" class="mr-2" [binary]="true"
+        inputId="batchWeightRequired"></p-checkbox>
+      <label for="batchWeightRequired" class="text-sm font-medium text-gray-300">Batch Weight Required</label>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <p-checkbox formControlName="HasExpiryDate" class="mr-2" [binary]="true" inputId="hasExpiryDate"></p-checkbox>
+      <label for="hasExpiryDate" class="text-sm font-medium text-gray-300">Has Expiry Date</label>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <p-checkbox formControlName="HasMfgDate" class="mr-2" [binary]="true" inputId="hasMfgDate"></p-checkbox>
+      <label for="hasMfgDate" class="text-sm font-medium text-gray-300">Has Mfg Date</label>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <p-checkbox formControlName="DoNotMaintainInventory" class="mr-2" [binary]="true"
+        inputId="doNotMaintainInventory"></p-checkbox>
+      <label for="doNotMaintainInventory" class="text-sm font-medium text-gray-300">Do Not Maintain Inventory</label>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <p-checkbox formControlName="IsActive" class="mr-2" [binary]="true" inputId="isActive"></p-checkbox>
+      <label for="isActive" class="text-sm font-medium text-gray-300">Is Active</label>
+    </div>
+  </div>
+
+
+  <div class="md:col-span-2">
+    <h3 class="text-lg font-semibold text-blue-400 mb-4 border-b border-gray-700 pb-2">Description & Media</h3>
+  </div>
+
+  <div class="col-span-2 flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">Long Description</label>
+    <textarea pInputTextarea rows="3" formControlName="Description"
+      class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none"></textarea>
+  </div>
+
+  <div class="col-span-2 flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">Short Description</label>
+    <input pInputText formControlName="ShortDescription"
+      class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+  </div>
+
+  <div class="col-span-2 flex flex-col space-y-1">
+    <label class="text-sm font-medium text-gray-300">Product Image (Base64 or File Name)</label>
+    <input pInputText formControlName="ImageFileAsBase64" placeholder="Paste Base64 or upload file..."
+      class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+  </div>
+
+  <div class="col-span-2 flex justify-end gap-3 mt-6">
+    <p-button label="Cancel" severity="secondary"
+      styleClass="!bg-gray-700 !text-gray-200 hover:!bg-gray-600 transition-all" (onClick)="onCancel.emit()"></p-button>
+    <p-button label="Save" styleClass="!bg-blue-600 hover:!bg-blue-700 !text-white transition-all" (onClick)="submit()"
+      [disabled]="form.invalid"></p-button>
+  </div>
+</form>

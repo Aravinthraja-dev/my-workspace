@@ -1,0 +1,196 @@
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+    <!-- Example Option Card -->
+    <div class="bg-surface-0 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-xl p-5 hover:shadow-lg transition-all duration-300 cursor-pointer flex items-center space-x-4"
+        (click)="openOption('BOMSettings')">
+        <i class="pi pi-cog text-primary text-2xl"></i>
+        <div>
+            <h4 class="text-base font-semibold text-surface-800 dark:text-surface-100 mb-1">BOM Settings</h4>
+            <p class="text-sm text-surface-500 dark:text-surface-400">Configure your Bill of Materials settings</p>
+        </div>
+    </div>
+
+    <!-- Add more options -->
+    <div class="bg-surface-0 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-xl p-5 hover:shadow-lg transition-all duration-300 cursor-pointer flex items-center space-x-4"
+        (click)="openOption('OtherSetting')">
+        <i class="pi pi-sliders-h text-primary text-2xl"></i>
+        <div>
+            <h4 class="text-base font-semibold text-surface-800 dark:text-surface-100 mb-1">Other Setting</h4>
+            <p class="text-sm text-surface-500 dark:text-surface-400">Another configuration option</p>
+        </div>
+    </div>
+</div>
+
+@if(displayBOMSettings){
+<p-dialog header="BOM Settings Configuration" [(visible)]="displayBOMSettings" [modal]="true"
+    [style]="{width: '50vw', minWidth: '320px'}" [draggable]="false" [resizable]="false"
+    styleClass="p-dialog-rounded p-dialog-shadow-lg p-dialog-aura">
+    <ng-template pTemplate="header">
+        <div class="flex items-center justify-between w-full">
+            <div class="flex items-center space-x-3">
+                <i class="pi pi-cog text-primary text-xl"></i>
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">BOM Settings Configuration</h2>
+            </div>
+            <div class="flex space-x-3">
+                <p-button label="Cancel" icon="pi pi-times" (click)="onCancel()"
+                    styleClass="p-button-text p-button-secondary p-button-sm"></p-button>
+                <p-button label="Save Settings" icon="pi pi-save" (click)="onSave()"
+                    styleClass="p-button-primary p-button-sm"></p-button>
+            </div>
+        </div>
+    </ng-template>
+
+    <form [formGroup]="ConfigForm" class="p-6">
+        <!-- General Settings Section -->
+        <div class="!mb-8">
+            <div class="flex items-center space-x-2 mb-5 pb-3 border-b-2 border-blue-100">
+                <i class="pi pi-sliders-h text-blue-600"></i>
+                <h3 class="text-lg font-semibold text-white-800">General Settings</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="flex flex-col space-y-2">
+                    <label class="text-sm font-medium text-gray-700">Default Currency</label>
+                    <p-select formControlName="DefaultCurrency" [options]="currencies" optionLabel="label" optionValue="value"
+                        placeholder="Select Currency" styleClass="w-full" [showClear]="true">
+                    </p-select>
+                </div>
+
+                <div class="flex flex-col space-y-2">
+                    <label class="text-sm font-medium text-gray-700">Default Unit of Measure</label>
+                    <p-select formControlName="DefaultUOM" [options]="uomList" optionLabel="UOMName" optionValue="id" placeholder="Select UOM"
+                        styleClass="w-full" [showClear]="true">
+                    </p-select>
+                </div>
+
+                <div class="flex flex-col space-y-2">
+                    <label class="text-sm font-medium text-gray-700">Rounding Precision</label>
+                    <p-inputNumber formControlName="RoundingPrecision" [min]="0" [max]="5" mode="decimal"
+                        placeholder="0-5 decimals" styleClass="w-full">
+                    </p-inputNumber>
+                </div>
+            </div>
+        </div>
+
+        <!-- Costing & Approval Section -->
+        <div class="!mb-8">
+            <div class="flex items-center space-x-2 mb-5 pb-3 border-b-2 border-blue-100">
+                <i class="pi pi-dollar text-blue-600"></i>
+                <h3 class="text-lg font-semibold text-white-800">Costing & Approval</h3>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-5 mb-5">
+                <label class="block text-sm font-medium text-gray-700 mb-3">Costing Method</label>
+                <div class="flex flex-wrap gap-4">
+                    <div
+                        class="flex items-center px-4 py-2 bg-gray-50 rounded-md border border-gray-200 hover:border-blue-400 transition-colors cursor-pointer">
+                        <p-radioButton name="CostingMethod" value="Standard" formControlName="CostingMethod"
+                            inputId="standard">
+                        </p-radioButton>
+                        <label for="standard" class="ml-2 text-sm font-medium text-gray-700 cursor-pointer">Standard
+                            Costing</label>
+                    </div>
+
+                    <div
+                        class="flex items-center px-4 py-2 bg-white rounded-md border border-gray-200 hover:border-blue-400 transition-colors cursor-pointer">
+                        <p-radioButton name="CostingMethod" value="Actual" formControlName="CostingMethod"
+                            inputId="actual">
+                        </p-radioButton>
+                        <label for="actual" class="ml-2 text-sm font-medium text-gray-700 cursor-pointer">Actual
+                            Costing</label>
+                    </div>
+
+                    <div
+                        class="flex items-center px-4 py-2 bg-gray-50 rounded-md border border-gray-200 hover:border-blue-400 transition-colors cursor-pointer">
+                        <p-radioButton name="CostingMethod" value="WeightedAverage" formControlName="CostingMethod"
+                            inputId="weighted">
+                        </p-radioButton>
+                        <label for="weighted" class="ml-2 text-sm font-medium text-gray-700 cursor-pointer">Weighted
+                            Average</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col space-y-2">
+                <label class="text-sm font-medium text-gray-700">BOM Approval Process</label>
+                <div class="flex items-center space-x-3 bg-gray-50 rounded-lg p-4">
+                    <p-toggleButton formControlName="AutoApproveBOM" [onLabel]="'Auto Approve Enabled'"
+                        offLabel="Manual Approval Required" [onIcon]="'pi pi-check'" [offIcon]="'pi pi-times'"
+                        styleClass="w-64">
+                    </p-toggleButton>
+                    <span class="text-xs text-gray-500">Toggle automatic approval for new BOMs</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Options Section -->
+        <div class="!mb-6">
+            <div class="flex items-center space-x-2 mb-5 pb-3 border-b-2 border-blue-100">
+                <i class="pi pi-shield text-blue-600"></i>
+                <h3 class="text-lg font-semibold text-white-800">Control Options</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-semibold text-gray-800 mb-1">Version Control</h4>
+                            <p class="text-xs text-gray-500">Track BOM version history</p>
+                        </div>
+                        <p-toggleButton formControlName="EnableVersionControl" onLabel="ON" offLabel="OFF"
+                            [onIcon]="'pi pi-check'" offIcon="pi pi-times">
+                        </p-toggleButton>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-semibold text-gray-800 mb-1">Multi-Level BOM</h4>
+                            <p class="text-xs text-gray-500">Enable nested bill of materials</p>
+                        </div>
+                        <p-toggleButton formControlName="EnableMultiLevelBOM" onLabel="ON" offLabel="OFF"
+                            [onIcon]="'pi pi-check'" offIcon="pi pi-times">
+                        </p-toggleButton>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-semibold text-gray-800 mb-1">Batch Control</h4>
+                            <p class="text-xs text-gray-500">Track materials by batch number</p>
+                        </div>
+                        <p-toggleButton formControlName="EnableBatchControl" onLabel="ON" offLabel="OFF"
+                            [onIcon]="'pi pi-check'" offIcon="pi pi-times">
+                        </p-toggleButton>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-semibold text-gray-800 mb-1">Waste Tracking</h4>
+                            <p class="text-xs text-gray-500">Monitor production waste</p>
+                        </div>
+                        <p-toggleButton formControlName="EnableWasteTracking" onLabel="ON" offLabel="OFF"
+                            [onIcon]="'pi pi-check'" offIcon="pi pi-times">
+                        </p-toggleButton>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <div class="flex items-center justify-between pt-4 border-t border-surface-200 dark:border-surface-700">
+            <div class="text-xs text-surface-500 dark:text-surface-400 flex items-center">
+                <i class="pi pi-info-circle mr-2"></i>
+                <span>Changes will take effect immediately after saving.</span>
+            </div>
+            <div>
+                <p-button type="button" label="Restore Defaults" icon="pi pi-refresh" (click)="onRestoreDefaults()"
+                    styleClass="p-button-outlined p-button-secondary p-button-sm"></p-button>
+            </div>
+        </div>
+    </ng-template>
+</p-dialog>
+}
