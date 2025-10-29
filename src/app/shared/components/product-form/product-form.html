@@ -62,12 +62,6 @@
     </p-select>
   </div>
 
-  <!-- <div class="flex flex-col space-y-1">
-    <label class="text-sm font-medium text-gray-300">UOM <span class="text-red-500">*</span></label>
-    <input pInputText formControlName="UOM"
-      class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
-  </div> -->
-
   <div class="flex flex-col space-y-1">
     <label for="unit-select" class="text-sm font-medium text-gray-300">
       UOM
@@ -164,22 +158,6 @@
   </div>
 
   <!-- UNIT -->
-  <!-- <div class="flex flex-col space-y-1">
-    <label for="unit-select" class="text-sm font-medium text-gray-300">
-      Unit
-    </label>
-    <p-select id="unit-select" [options]="unitOptions" formControlName="UnitID" optionLabel="UOMName" optionValue="id"
-      [filter]="true" [showClear]="true" placeholder="Select Unit" class="custom-select w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 
-           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
-      <ng-template #selectedItem let-selected>
-        <div class="text-gray-100">{{ selected.UOMName }}</div>
-      </ng-template>
-      <ng-template let-option #item>
-        <div class="text-gray-200">{{ option.UOMName }}</div>
-      </ng-template>
-    </p-select>
-  </div> -->
-
   <div class="flex flex-col space-y-1">
     <label class="text-sm font-medium text-gray-300">Unit <span class="text-red-500">*</span></label>
     <input pInputText formControlName="UnitID"
@@ -332,6 +310,11 @@
   <div class="col-span-2 flex justify-end gap-3 mt-6">
     <p-button label="Cancel" severity="secondary"
       styleClass="!bg-gray-700 !text-gray-200 hover:!bg-gray-600 transition-all" (onClick)="onCancel.emit()"></p-button>
+    @if (product) {
+    <p-button label="Delete" severity="danger" icon="pi pi-trash"
+      styleClass="!bg-red-600 hover:!bg-red-700 !text-white transition-all" (onClick)="onDeleteProduct()">
+    </p-button>
+    }
     <p-button label="Save" styleClass="!bg-blue-600 hover:!bg-blue-700 !text-white transition-all" (onClick)="submit()"
       [disabled]="form.invalid"></p-button>
   </div>

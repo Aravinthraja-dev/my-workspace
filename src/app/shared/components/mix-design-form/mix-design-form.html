@@ -1,0 +1,138 @@
+<p-card header="Product Details" class="p-6 rounded-2xl bg-gray-900 text-gray-100 shadow-lg">
+  <form [formGroup]="mixDesignForm" class="space-y-6">
+
+    <!-- Product Details -->
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-[#1e1e1e] !p-3 md:p-8 rounded-2xl border border-gray-700 shadow-lg">
+
+      <!-- Product -->
+      <div class="flex flex-col space-y-1">
+        <label for="product-select" class="text-sm font-medium text-gray-300">Product</label>
+        <p-select id="product-select" [options]="products" formControlName="ProductID" optionLabel="ProductName"
+          optionValue="ProductID" [filter]="true" [showClear]="false" placeholder="Select Product"
+          class="custom-select w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 
+           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+          <ng-template #selectedItem let-selected>
+            <div class="text-gray-100">{{ selected.label }}</div>
+          </ng-template>
+          <ng-template let-option #item>
+            <div class="text-gray-200">{{ option.label }}</div>
+          </ng-template>
+        </p-select>
+      </div>
+
+      <!-- Mix Code -->
+      <div class="flex flex-col space-y-1">
+        <label class="text-sm font-medium text-gray-300">Mix Code</label>
+        <input pInputText formControlName="MixCode" placeholder="Enter mix code"
+          class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+      </div>
+
+      <!-- Mix Name -->
+      <div class="flex flex-col space-y-1">
+        <label class="text-sm font-medium text-gray-300">Mix Name</label>
+        <input pInputText formControlName="MixName" placeholder="Enter mix name"
+          class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+      </div>
+
+      <!-- Version -->
+      <div class="flex flex-col space-y-1">
+        <label class="text-sm font-medium text-gray-300">Version</label>
+        <input pInputText formControlName="Version" placeholder="Version number"
+          class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+      </div>
+
+      <!-- Effective From -->
+      <div class="flex flex-col space-y-1">
+        <label class="text-sm font-medium text-gray-300">Effective From</label>
+        <p-datepicker formControlName="EffectiveFrom" dateFormat="dd.mm.yy" [iconDisplay]="'input'" [showIcon]="true"
+          inputId="icondisplay"
+          class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+      </div>
+
+      <!-- Effective To -->
+      <div class="flex flex-col space-y-1">
+        <label class="text-sm font-medium text-gray-300">Effective To</label>
+        <p-datepicker formControlName="EffectiveTo" dateFormat="dd.mm.yy" [iconDisplay]="'input'" [showIcon]="true"
+          inputId="icondisplay"
+          class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+      </div>
+
+      <!-- Description (full width) -->
+      <div class="flex flex-col space-y-1 lg:col-span-2">
+        <label class="text-sm font-medium text-gray-300">Description</label>
+        <textarea pInputTextarea formControlName="Description" rows="2"
+          class="w-full !p-3 rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+          placeholder="Enter description"></textarea>
+      </div>
+
+      <!-- Approved -->
+      <div class="flex items-center gap-2">
+        <p-checkbox formControlName="IsApproved" inputId="size_normal" name="size" value="Normal" />
+        <label for="size_normal" class="text-gray-300">Approved</label>
+      </div>
+    </div>
+
+    <p-divider class="!border-gray-700"></p-divider>
+
+    <!-- Components Section -->
+    <div class="flex justify-between items-center">
+      <h3 class="text-lg font-semibold">Components</h3>
+      <button pButton type="button" label="Add Component" icon="pi pi-plus"
+        class="!bg-blue-600 hover:!bg-blue-700 !text-white" (click)="addComponent()"></button>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto rounded-lg border border-gray-700">
+      <p-table [value]="components.controls" [tableStyle]="{ 'min-width': '60rem' }">
+        <ng-template pTemplate="header">
+          <tr class="bg-gray-800 text-gray-300">
+            <th class="py-3 px-4 text-left">Material</th>
+            <th class="py-3 px-4 text-left">Quantity</th>
+            <th class="py-3 px-4 text-left">UOM</th>
+            <th class="py-3 px-4 text-left">Rate</th>
+            <th class="py-3 px-4 text-left">Total</th>
+            <th class="py-3 px-4 text-center">Action</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row let-rowIndex="rowIndex">
+          <tr [formGroupName]="rowIndex" class="border-b border-gray-700 hover:bg-gray-800">
+            <td class="px-3 py-2">
+              <p-select [options]="products" formControlName="MaterialID" optionLabel="ProductName"
+                optionValue="ProductID" [filter]="true" [showClear]="false" placeholder="Select Product"
+                (onChange)="onMaterialChange(rowIndex)"
+                class="custom-select w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 
+                focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+              </p-select>
+            </td>
+            <td class="px-3 py-2">
+              <input pInputText type="number" formControlName="Quantity" (input)="updateRowTotal(rowIndex)"
+                class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+            </td>
+            <td class="px-3 py-2">
+              <input pInputText formControlName="UOM"
+                class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+            </td>
+            <td class="px-3 py-2">
+              <input pInputText type="number" formControlName="CostRate" (input)="updateRowTotal(rowIndex)"
+                class="p-inputtext w-full rounded-lg bg-[#2b2b2b] border border-gray-600 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" />
+            </td>
+            <td class="px-3 py-2 text-right font-medium">
+              {{ row.value.TotalCost | number: '1.2-2' }}
+            </td>
+            <td class="px-3 py-2 text-center">
+              <button pButton icon="pi pi-trash" class="p-button-text p-button-danger"
+                (click)="removeComponent(rowIndex)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Total Cost -->
+    <div class="flex justify-end mt-4">
+      <h4 class="text-lg font-semibold">Total Cost: {{ mixDesignForm.value.TotalCost | number: '1.2-2' }}</h4>
+    </div>
+  </form>
+</p-card>

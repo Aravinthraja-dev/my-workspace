@@ -1,9 +1,20 @@
 <div class="card">
-    <p-table [value]="products" selectionMode="single" [(selection)]="selectedProduct" dataKey="id"
-        [tableStyle]="{ 'min-width': '60rem' }" (onRowSelect)="onRowSelect($event)">
+    <p-table 
+        #dt
+        [value]="products" 
+        selectionMode="single" 
+        [(selection)]="selectedProduct" 
+        dataKey="id"
+        [tableStyle]="{ 'min-width': '60rem' }" 
+        [globalFilterFields]="['ProductName', 'ProductCode', 'ProductType', 'UOM', 'Rate', 'UnitID']"
+        (onRowSelect)="onRowSelect($event)">
         <ng-template #caption>
             <div class="flex items-center justify-between">
                 <span class="text-xl font-bold">Products</span>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" placeholder="Search..." (input)="search$.next($event.target.value)" />
+                </span>
                 <p-button icon="pi pi-refresh" label="Add Product" (onClick)="openAddDialog()" />
             </div>
         </ng-template>
@@ -39,6 +50,6 @@
 <p-dialog header="{{ isEditMode ? 'Edit Product' : 'Add Product' }}" [(visible)]="displayDialog" [modal]="true"
     [closable]="true" [style]="{ width: '50vw' }">
     <app-product-form [product]="selectedProduct" [productTypeOptions]="productTypeOptions"
-        (onSave)="saveProduct($event)" (onCancel)="closeDialog()"></app-product-form>
+        (onSave)="saveProduct($event)" (onCancel)="closeDialog()" (onDelete)="confirmDelete($event)"></app-product-form>
 </p-dialog>
 }

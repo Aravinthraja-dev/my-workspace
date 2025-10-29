@@ -13,7 +13,6 @@ import { Button, ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 
 
-
 @Component({
   selector: 'app-configurations',
   imports: [

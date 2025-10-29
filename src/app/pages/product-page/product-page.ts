@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { RatingModule } from 'primeng/rating';
-import { TableModule } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { ProductForm } from '../../shared/components/product-form/product-form';
@@ -12,7 +12,7 @@ import { ProductMasterService } from '../../shared/services/product-master.servi
 import { Subject, switchMap, takeUntil } from 'rxjs';
 import { ConfigurationService } from '../../shared/services/configuration.service';
 import { UOM } from '../../shared/models/settings-config';
-
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-page',
@@ -31,6 +31,8 @@ import { UOM } from '../../shared/models/settings-config';
 })
 export class ProductPage implements OnInit, OnDestroy {
 
+  @ViewChild('dt') dt!: Table;
+
   products!: ProductMaster[];
   displayDialog = false;
   isEditMode = false;
@@ -38,8 +40,12 @@ export class ProductPage implements OnInit, OnDestroy {
   UOMList: UOM[] = [];
   productTypeOptions: { label: string, value: string }[] = []
   private unsubscribe$ = new Subject<void>();
+  search$ = new Subject<string>();
 
-  constructor(private productMaster: ProductMasterService, private configService: ConfigurationService) { }
+  constructor(
+    private productMaster: ProductMasterService,
+    private configService: ConfigurationService,
+  ) { }
 
   ngOnInit(): void {
     this.productTypeOptions = [
@@ -47,6 +53,15 @@ export class ProductPage implements OnInit, OnDestroy {
       { label: 'Raw Material', value: 'RM' },
       { label: 'Semi-Finished', value: 'SF' }
     ]
+    this.loadProducts();
+
+    this.search$.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(value => this.dt.filterGlobal(value, 'contains'));
+  }
+
+  loadProducts(): void {
     this.configService.getAllUOM()
       .pipe(
         takeUntil(this.unsubscribe$),
@@ -58,23 +73,16 @@ export class ProductPage implements OnInit, OnDestroy {
       .subscribe({
         next: (result: ProductMaster[]) => {
           this.products = result;
-          console.log('Products:', this.products);
         },
         error: (err) => {
           console.error('Error fetching data:', err);
         }
-      })
+      });
   }
 
   openAddDialog() {
     this.isEditMode = false;
     this.selectedProduct = null;
-    this.displayDialog = true;
-  }
-
-  openEditDialog(product: ProductMaster) {
-    this.isEditMode = true;
-    this.selectedProduct = { ...product };
     this.displayDialog = true;
   }
 
@@ -89,26 +97,35 @@ export class ProductPage implements OnInit, OnDestroy {
   }
 
   saveProduct(product: ProductMaster) {
-    if (this.isEditMode) {
-      // update logic
-    } else {
-      // add logic
-      this.productMaster.create(product).subscribe({
-        next: () => {
-          console.log('Product Added')
-        }
-      })
-    }
-    this.displayDialog = false;
+    const request$ = this.isEditMode ? this.productMaster.update(product.ProductID, product) : this.productMaster.create(product)
+
+    request$.subscribe({
+      next: () => {
+        console.log(this.isEditMode ? 'Product Updated' : 'Product Added');
+        this.loadProducts();      
+        this.selectedProduct = null;
+        this.dt.clear();           
+        this.displayDialog = false;
+      },
+      error: (err) => console.error('Save failed:', err)
+    })
   }
 
   confirmDelete(product: ProductMaster) {
-    // use PrimeNG ConfirmDialog or ConfirmationService
+    this.productMaster.delete(product.ProductID).subscribe({
+      next: () => {
+        this.loadProducts();      
+        this.selectedProduct = null;
+        this.dt.clear();           
+        this.displayDialog = false;
+      },
+      error: (err) => console.error('Delete failed:', err)
+    })
   }
 
   getUOMName(id: number) {
     const uom = this.UOMList.find((x: UOM) => x.id === id)
-    return uom ? uom.id : ''
+    return uom ? uom.UOMName : ''
   }
 
   getProductTypeLabel(value: string): string {

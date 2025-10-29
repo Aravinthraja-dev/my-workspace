@@ -22,6 +22,10 @@ export class Navbar implements OnInit {
         icon: 'pi pi-warehouse'
       },
       {
+        label: 'Mix Design',
+        routerLink: 'mix-design',
+      },
+      {
         label: 'Configurations',
         routerLink: 'configurations',
         icon: 'pi pi-cog',

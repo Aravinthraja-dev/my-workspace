@@ -24,10 +24,10 @@ export class ProductForm implements OnInit, OnChanges {
   @Input() productTypeOptions: { label: string; value: string }[] = []
   @Output() onSave = new EventEmitter<ProductMaster>();
   @Output() onCancel = new EventEmitter<void>();
+  @Output() onDelete = new EventEmitter<ProductMaster>();
 
   form!: FormGroup;
 
-  // productTypeOptions: { label: string; value: string }[] = [];
   companyOptions: { label: string; value: string }[] = [];
   divisionOptions: { label: string; value: string }[] = [];
   productGroupOptions: { label: string; value: string }[] = [];
@@ -38,9 +38,13 @@ export class ProductForm implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private configService: ConfigurationService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.product) this.form.patchValue(this.product);
     if(changes['productTypeOptions']) {
       this.productTypeOptions = changes['productTypeOptions'].currentValue
+    }
+
+    if(changes['product']) {
+      console.log('Product ', changes['product'].currentValue)
+      this.product = changes['product'].currentValue
     }
   }
 
@@ -98,6 +102,9 @@ export class ProductForm implements OnInit, OnChanges {
         this.unitOptions = result
       }
     })
+
+    if(this.product) this.form.patchValue(this.product)
+
   }
 
   submit() {
@@ -106,4 +113,12 @@ export class ProductForm implements OnInit, OnChanges {
        this.form.reset();
     }
   }
+
+  onDeleteProduct() {
+    if(this.form.valid) {
+      this.onDelete.emit(this.form.value);
+      this.form.reset();
+    }
+  }
+
 }
